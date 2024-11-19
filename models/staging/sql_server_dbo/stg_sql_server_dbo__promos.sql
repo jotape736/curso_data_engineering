@@ -15,6 +15,7 @@ renamed_casted AS (
     SELECT
         md5(promo_id) AS promo_id,
         INITCAP(promo_id) AS promo_desc,
+        -- CAST(discount / 10 AS FLOAT) AS discount, por qué con esto en snowflake se ve como un entero?
         discount,
         status,
         CONVERT_TIMEZONE('UTC', 'Europe/Paris',  CAST(_fivetran_synced AS TIMESTAMP_NTZ)) AS _fivetran_synced, -- Pero esto no estaba ya en TIMESTAMP_TZ(9)??

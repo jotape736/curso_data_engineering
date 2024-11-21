@@ -21,5 +21,21 @@ models:
         tests:
           - not_null
       - name: load_date
-        tests:
-          - not_null
+  - name: stg_sql_server_dbo__orders
+    columns:
+      - name: order_id
+      - name: shipping_service_id
+      - name: dollar_shipping_cost
+      - name: address_id
+      - name: created_at
+      - name: promo_id
+      - name: estimated_delivery_at
+      - name: dollar_order_cost
+      - name: user_id
+      - name: dollar_order_total
+      - name: delivered_at
+      - name: tracking_id
+      - name: status
+      - name: load_date
+
+  

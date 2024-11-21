@@ -4,7 +4,7 @@ sources:
 
   - name: sql_server_dbo # name of the source 
     schema: sql_server_dbo # this is the schema our raw data lives in
-    database: ALUMNO10_DEV_BRONZE_DB # this is the name of our database
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB"  # this is the name of our database
 
     quoting:
       database: false
@@ -21,10 +21,20 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: address_id
+            tests:
+              - not_null
           - name: zipcode
+            tests:
+              - not_null
           - name: country
+            tests:
+              - not_null
           - name: address
+            tests:
+              - not_null
           - name: state
+            tests:
+              - not_null
           - name: _fivetran_deleted
           - name: _fivetran_synced
       - name: events

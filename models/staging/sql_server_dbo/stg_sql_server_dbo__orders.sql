@@ -23,7 +23,7 @@ renamed_casted AS (
         order_total AS dollar_order_total,
         CONVERT_TIMEZONE('UTC', delivered_at) AS delivered_at,
         NULLIF(tracking_id,'') AS tracking_id,
-        status,
+        {{ dbt_utils.generate_surrogate_key(['status']) }} AS status_id,
         CONVERT_TIMEZONE('UTC', _fivetran_synced) AS load_date
     FROM src_orders
     )
@@ -41,7 +41,7 @@ SELECT
     dollar_order_total,
     delivered_at,
     tracking_id,
-    status,
+    status_id,
     load_date
 FROM renamed_casted
 

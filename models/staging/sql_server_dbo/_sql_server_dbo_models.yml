@@ -13,7 +13,7 @@ models:
       - name: promo_desc         
         tests:
           - not_null 
-      - name: discount
+      - name: discount_percentaje
         tests:
           - not_null
           - positive_values    

@@ -7,7 +7,7 @@ renamed_casted AS (
         product_id,
         name AS product_desc,
         price AS dollar_price,
-        inventory,
+        inventory::int AS inventory,
         CASE
             WHEN inventory <= 0 THEN false
             ELSE true

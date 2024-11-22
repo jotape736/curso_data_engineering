@@ -11,13 +11,12 @@ WITH src_orders AS (
 
 renamed_casted AS (
     SELECT
-        NULLIF(shipping_service,'') AS shipping_desc,
-        NULLIF(shipping_service,'') AS shipping_service_id
+        {{ dbt_utils.generate_surrogate_key(["COALESCE(NULLIF(shipping_service, ''),'not_asigned_yet')"]) }} AS shipping_service_id,
+        COALESCE(NULLIF(shipping_service, ''),'not_asigned_yet') AS shipping_desc
     FROM src_orders
     )
 
 SELECT DISTINCT
-    shipping_desc,
-    {{ dbt_utils.generate_surrogate_key(['shipping_service_id']) }} AS shipping_service_id
+    *
     FROM renamed_casted
 

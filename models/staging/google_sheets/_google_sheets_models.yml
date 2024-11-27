@@ -16,6 +16,6 @@ models:
       - name: month
         tests:
           - not_null
-      - name: date_load
+      - name: load_date
         tests:
           - not_null

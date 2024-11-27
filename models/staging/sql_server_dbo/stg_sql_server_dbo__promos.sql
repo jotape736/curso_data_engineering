@@ -13,17 +13,13 @@ renamed_casted AS (
     UNION ALL
     SELECT
         {{ dbt_utils.generate_surrogate_key(['promo_id']) }} AS promo_id,
-        promo_id AS promo_desc,
+        promo_id::VARCHAR(20) AS promo_desc,
         discount / 100 AS discount_percentaje,
-        status,
+        status::VARCHAR(20) AS status,
         CONVERT_TIMEZONE('UTC', _fivetran_synced) AS load_date,
     FROM src_promos
 )
 
 SELECT
-    promo_id,
-    promo_desc,
-    discount_percentaje,
-    status,
-    load_date
+   *
 FROM renamed_casted

@@ -12,7 +12,7 @@ WITH src_orders AS (
 renamed_casted AS (
     SELECT
         {{ dbt_utils.generate_surrogate_key(["COALESCE(NULLIF(shipping_service, ''),'not_asigned_yet')"]) }} AS shipping_service_id,
-        COALESCE(NULLIF(shipping_service, ''),'not_asigned_yet') AS shipping_desc
+        COALESCE(NULLIF(shipping_service, ''),'not_asigned_yet')::VARCHAR(20) AS shipping_desc
     FROM src_orders
     )
 

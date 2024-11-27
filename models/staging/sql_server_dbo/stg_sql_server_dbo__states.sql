@@ -4,7 +4,7 @@ WITH src_addresses AS (
     ),
 renamed_casted AS (
     SELECT DISTINCT
-        state AS state_desc,
+        state::VARCHAR(39) AS state_desc,
         {{ dbt_utils.generate_surrogate_key(['state']) }} AS state_id
     FROM src_addresses
     )

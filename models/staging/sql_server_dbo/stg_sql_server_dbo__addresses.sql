@@ -5,8 +5,8 @@ WITH src_addresses AS (
 
 renamed_casted AS (
     SELECT
-        address_id,
-        address AS address_desc,
+        address_id::VARCHAR(40) AS address_id,
+        address::VARCHAR(50) AS address_desc,
         _fivetran_synced AS load_date
     FROM src_addresses
 )

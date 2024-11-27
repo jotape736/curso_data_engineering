@@ -4,8 +4,8 @@ WITH src_products AS (
     ),
 renamed_casted AS (
     SELECT
-        product_id,
-        name AS product_desc,
+        product_id::VARCHAR(50) AS product_id,
+        name::VARCHAR(30) AS product_desc,
         price AS dollar_price,
         inventory::int AS inventory,
         CASE

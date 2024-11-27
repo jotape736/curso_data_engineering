@@ -11,7 +11,7 @@ WITH src_orders AS (
 renamed_casted AS (
     SELECT
         {{dbt_utils.generate_surrogate_key(['status'])}} AS status_id,
-        status AS status_desc
+        status::VARCHAR(20) AS status_desc
     FROM src_orders
     )
 

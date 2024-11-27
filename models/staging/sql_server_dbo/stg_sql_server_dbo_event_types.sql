@@ -5,8 +5,8 @@ WITH src_events AS (
 
 renamed_casted AS (
     SELECT DISTINCT
-        {{dbt_utils.generate_surrogate_key(['event_type'])}} AS event_id,
-        event_type AS event_desc
+        {{dbt_utils.generate_surrogate_key(['event_type'])}} AS event_type_id,
+        event_type::VARCHAR(20) AS event_type_desc
     FROM src_events
 )
 

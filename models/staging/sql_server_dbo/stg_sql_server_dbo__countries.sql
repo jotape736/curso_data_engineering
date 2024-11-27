@@ -4,7 +4,7 @@ WITH src_addresses AS (
     ),
 renamed_casted AS (
     SELECT DISTINCT
-        country AS country_desc,
+        country::VARCHAR(50) AS country_desc,
         {{ dbt_utils.generate_surrogate_key(['country']) }} AS country_id
     FROM src_addresses
     )

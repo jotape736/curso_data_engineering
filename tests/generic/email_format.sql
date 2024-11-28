@@ -1,4 +1,4 @@
-{% test positive_values(model, column_name) %}
+{% test email_format(model, column_name) %}
 
    select *
    from {{ model }}

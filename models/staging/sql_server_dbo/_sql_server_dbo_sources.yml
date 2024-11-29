@@ -21,15 +21,19 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: address_id
+            description: Primary key for addresses.
             tests:
               - not_null
           - name: zipcode
+            description: ""
             tests:
               - not_null
           - name: country
+            description: ""
             tests:
               - not_null
           - name: address
+            description: Address
             tests:
               - not_null
           - name: state
@@ -54,6 +58,10 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: order_id
+            description: Primary key for orders.
+            tests:
+              - unique
+              - not_null
           - name: shipping_service
           - name: shipping_cost
           - name: address_id

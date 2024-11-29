@@ -9,7 +9,8 @@ renamed_casted AS (
         , product_id::VARCHAR(40) AS product_id
         , quantity::int AS quantity
         , month(month) AS month
-        , CONVERT_TIMEZONE('UTC', _fivetran_synced) AS load_date
+        , year(month) AS year
+        , CONVERT_TIMEZONE('UTC', _fivetran_synced) AS load_date_utc
     FROM src_budget
     )
 

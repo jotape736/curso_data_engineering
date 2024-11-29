@@ -2,6 +2,6 @@
 
    select *
    from {{ model }}
-   where {{ column_name }} LIKE '%@%.%'
+   where {{ column_name }} NOT LIKE '%@%.%'
 
 {% endtest %}

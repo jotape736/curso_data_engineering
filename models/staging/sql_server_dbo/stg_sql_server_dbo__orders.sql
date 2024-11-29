@@ -1,9 +1,3 @@
-{{
-  config(
-    materialized='view'
-  )
-}}
-
 WITH src_orders AS (
     SELECT * 
     FROM {{ source('sql_server_dbo', 'orders') }}
@@ -11,37 +5,26 @@ WITH src_orders AS (
 
 renamed_casted AS (
     SELECT
-        order_id,
-        NULLIF(shipping_service,'') AS shipping_service_id,
-        shipping_cost AS dollar_shipping_cost,
+        order_id::VARCHAR(40) AS order_id,
+        {{ dbt_utils.generate_surrogate_key(["NULLIF(shipping_service,'')"]) }} AS shipping_service_id,
+        NULLIF(shipping_service,'') AS shipping_service_desc,
+        shipping_cost AS shipping_cost_usd,
         address_id,
-        CONVERT_TIMEZONE('UTC', created_at) AS created_at,
-        NULLIF(promo_id,'') AS promo_id,
-        CONVERT_TIMEZONE('UTC', estimated_delivery_at) AS estimated_delivery_at,
-        order_cost AS dollar_order_cost,
+        CONVERT_TIMEZONE('UTC', created_at) AS created_at_utc,
+        {{ dbt_utils.generate_surrogate_key(["NULLIF(promo_id,'')"]) }} AS promo_id,
+        CONVERT_TIMEZONE('UTC', estimated_delivery_at) AS estimated_delivery_at_utc,
+        order_cost AS order_cost_usd,
         user_id,
-        order_total AS dollar_order_total,
-        CONVERT_TIMEZONE('UTC', delivered_at) AS delivered_at,
+        order_total AS order_total_usd,
+        CONVERT_TIMEZONE('UTC', delivered_at) AS delivered_at_utc,
         NULLIF(tracking_id,'') AS tracking_id,
         {{ dbt_utils.generate_surrogate_key(['status']) }} AS status_id,
-        CONVERT_TIMEZONE('UTC', _fivetran_synced) AS load_date
+        status::VARCHAR(15) AS status_desc,
+        CONVERT_TIMEZONE('UTC', _fivetran_synced) AS load_date_utc
     FROM src_orders
     )
 
 SELECT
-    order_id,
-    {{ dbt_utils.generate_surrogate_key(['shipping_service_id']) }} AS shipping_service_id,
-    dollar_shipping_cost,
-    address_id,
-    created_at,
-    {{ dbt_utils.generate_surrogate_key(['promo_id']) }} AS promo_id,
-    estimated_delivery_at,
-    dollar_order_cost,
-    user_id,
-    dollar_order_total,
-    delivered_at,
-    tracking_id,
-    status_id,
-    load_date
+    *
 FROM renamed_casted
 

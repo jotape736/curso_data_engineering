@@ -10,9 +10,9 @@ renamed_casted AS (
         , last_name
         , email
         , phone_number
-        , created_at
+        , created_at_utc
         , address_id
-        , load_date
+        , load_date_utc
     FROM stg_users
     )
 

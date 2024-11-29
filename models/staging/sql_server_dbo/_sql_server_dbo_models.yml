@@ -77,7 +77,7 @@ models:
         tests:
           - positive_values
           - dbt_utils.expression_is_true:
-              expression: "= order_cost_usd +"
+              expression: "= order_cost_usd + shipping_cost_usd"
       - name: delivered_at_utc
         description: Date that the order was delivered.
       - name: tracking_id

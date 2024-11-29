@@ -5,14 +5,12 @@ WITH stg_users AS (
 
 renamed_casted AS (
     SELECT
-        user_id
-        , first_name
-        , last_name
-        , email
-        , phone_number
-        , created_at
-        , address_id
-        , load_date
+        address_id,
+        address_desc,
+        zipcode,
+        country,
+        state,
+        load_date_utc
     FROM stg_users
     )
 

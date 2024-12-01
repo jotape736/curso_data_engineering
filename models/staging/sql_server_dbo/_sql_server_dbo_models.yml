@@ -2,40 +2,189 @@ version: 2
 
 models:
   - name: stg_sql_server_dbo__promos
+    description: Discount promos.
     columns:
       - name: promo_id
+        description: Primary key for promos.
+        tests:
+          - not_null
+          - unique
+      - name: promo_desc
+        description: Name of the promo.
+        tests:
+          - not_null
+      - name: discount
+        tests:
+          - not_null
+          - positive_values
+      - name: status
+        description: It says whether promotion code is active or not.
+        tests:
+          - not_null
+      - name: load_date_utc
+        description: Date that the data was loaded.
+
+  - name: stg_sql_server_dbo__orders
+    columns:
+      - name: order_id
+        description: Primary key for orders.
+        tests:
+          - unique
+          - not_null
+      - name: shipping_service_id
+        description: Foreing key from shipping services.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__shipping_services')
+              field: shipping_service_id
+      - name: shipping_service_desc
+        description: Name of shipping service.
+      - name: shipping_cost_usd
+        description: Shipping costs in US dollars.
+        tests:
+          - positive_values
+      - name: address_id
+        description: Foreing key from addresses.
+        tests:
+          - relationships:
+              to: ref('stg_sql_server_dbo__addresses')
+              field: address_id
+      - name: created_at_utc.
+        description: Date that the order was created.
+      - name: promo_id
+        description: Foreing key from promos.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__promos')
+              field: promo_id
+      - name: estimated_delivery_at_utc
+        description: Estimated date when order will be delivered.
+      - name: order_cost_usd
+        description: Total price of all products in the order.
+        tests:
+          - positive_values
+      - name: user_id
+        description: Foreing key from users.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__users')
+              field: user_id
+      - name: order_total_usd
+        description: Sum of the total price of all the products in the order plus shipping costs.
+        tests:
+          - positive_values
+      - name: delivered_at_utc
+        description: Date that the order was delivered.
+      - name: tracking_id
+        description: ID for order tracking, NULL if still under preparation.
+      - name: status_id
+        description: Status primary key for future normalization.
+      - name: status_desc
+        description: '{{ doc("order_status") }}'
+      - name: load_date_utc
+        description: Date that the data was loaded.
+
+  - name: stg_sql_server_dbo__users
+    columns:
+      - name: user_id
+        description: Primary key for users.
+        tests:
+          - not_null
+          - unique
+      - name: address_id
+        description: Foreign key from addresses.
+      - name: last_name
+        description: ""
+      - name: created_at_utc
+        description: Date that the user was created.
+      - name: phone_number
+        description: ""
+      - name: first_name
+        description: ""
+      - name: email
+        description: ""
+        tests:
+          - email_format
+      - name: load_date_utc
+        description: Date that the data was loaded.
+
+  - name: stg_sql_server_dbo__products
+    columns:
+      - name: product_id
+        description: Primary key for products.
         tests:
           - not_null
           - unique
           - relationships:
-              to: ref('stg_sql_server_dbo__orders')
-              field: promo_id
-      - name: promo_desc         
-        tests:
-          - not_null 
-      - name: discount
+              to: ref('stg_sql_server_dbo__order_items')
+              field: product_id
+      - name: product_desc
+        description: Product name.
         tests:
           - not_null
-          - positive_values    
-      - name: status
+      - name: price_usd
+        description: Product price in US dollars.
         tests:
-          - not_null
+          - positive_values
+      - name: inventory
+        description: Quantity of the product available.
+        tests:
+          - positive_values
+      - name: stock
+        description: Determines via a boolean whether the stock is available.
+        tests:
+          - accepted_values:
+              values: ["true", "false"]
       - name: load_date
-  - name: stg_sql_server_dbo__orders
+        description: Date that the data was loaded.
+
+  - name: stg_sql_server_dbo__addresses
+    columns:
+      - name: address_id
+        description: Primary key for address.
+      - name: address_desc
+        description: Address name.
+      - name: load_date_utc
+        description: Date that the data was loaded.
+      - name: country
+        description: Country name.
+      - name: state
+        description: State name.
+      - name: zipcode
+        description: ""
+
+  - name: stg_sql_server_dbo__order_items
+    description: Products associated with an order.
     columns:
       - name: order_id
-      - name: shipping_service_id
-      - name: dollar_shipping_cost
-      - name: address_id
-      - name: created_at
-      - name: promo_id
-      - name: estimated_delivery_at
-      - name: dollar_order_cost
-      - name: user_id
-      - name: dollar_order_total
-      - name: delivered_at
-      - name: tracking_id
-      - name: status
-      - name: load_date
+        description: Foreign key from orders.
+      - name: product_id
+        description: Foreing key from products.
+      - name: load_date_utc
+        description: Date when the data was loaded.
 
-  
+  - name: stg_sql_server_dbo__events
+    description: Events during the navigation on an e-commerce.
+    columns:
+      - name: event_id
+        description: Primary key for events.
+      - name: page_url
+      - name: event_type_desc
+        description: '{{ doc("event_types") }}'
+      - name: event_type_id
+        description: Event type primary key for future normalization.
+      - name: user_id
+        description: Foreing key from users.
+      - name: product_id
+        description: Foreing key from products.
+      - name: session_id
+        description: Primary key for gather all events in one session.
+      - name: created_at_utc
+        description: Date when the session was created in utc format.
+      - name: order_id
+        description: Foreing key from orders.
+      - name: load_date_utc
+        description: Date when the data was loaded in utc.  

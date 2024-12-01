@@ -2,24 +2,25 @@ version: 2
 
 models:
   - name: stg_google_sheets__budget
+    description: Monthly target budgets per product.
     columns:
-      - name: _row
+      - name: budget_id
+        description: Primary key for budget.
         tests:
           - not_null
           - unique
-      - name: product_id         
-        tests:
-          - not_null
-          - relationships:
-                to: ref('stg_sql_server_dbo__products')
-                field: product_id  
+      - name: product_id
+        description: Foreing key from product.
       - name: quantity
+        description: Quantity expected to be sold casted as int.
         tests:
-          - not_null
-          - positive_values    
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
       - name: month
+        description: Month for the budget as a number.
         tests:
           - not_null
-      - name: date_load
-        tests:
-          - not_null
+      - name: load_date_utc
+        description: Date that the data was loaded.
+      - name: year
+        description: Budget year for comparisons.

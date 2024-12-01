@@ -1,9 +1,9 @@
-WITH stg_users AS (
+WITH stg_addresses AS (
     SELECT * 
     FROM {{ ref('stg_sql_server_dbo__addresses') }}
     ),
 
-renamed_casted AS (
+addresses AS (
     SELECT
         address_id,
         address_desc,
@@ -11,7 +11,7 @@ renamed_casted AS (
         country,
         state,
         load_date_utc
-    FROM stg_users
+    FROM stg_addresses
     )
 
-SELECT * FROM renamed_casted
+SELECT * FROM addresses

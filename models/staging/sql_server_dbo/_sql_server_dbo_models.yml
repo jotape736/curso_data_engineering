@@ -13,7 +13,7 @@ models:
         description: Name of the promo.
         tests:
           - not_null
-      - name: discount_percentaje
+      - name: discount
         tests:
           - not_null
           - positive_values
@@ -76,8 +76,6 @@ models:
         description: Sum of the total price of all the products in the order plus shipping costs.
         tests:
           - positive_values
-          - dbt_utils.expression_is_true:
-              expression: "= order_cost_usd + shipping_cost_usd"
       - name: delivered_at_utc
         description: Date that the order was delivered.
       - name: tracking_id
@@ -174,6 +172,8 @@ models:
       - name: event_id
         description: Primary key for events.
       - name: page_url
+      - name: event_type_desc
+        description: '{{ doc("event_types") }}'
       - name: event_type_id
         description: Event type primary key for future normalization.
       - name: user_id

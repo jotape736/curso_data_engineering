@@ -9,28 +9,27 @@ WITH sales AS (
         ON orders.promo_id = promos.promo_id
     ),
 
-    promotional_sales_users AS (
-        SELECT
-            user_id,
-            promo_id
+    customers_per_promo AS (
+        SELECT 
+            COUNT(DISTINCT(user_id)) AS total_customers_per_promo,
+            promo_desc
         FROM sales
-        WHERE promo_desc != 'No-promo'
+        GROUP BY promo_desc
     ),
 
-    total_sales_users AS (
-        SELECT DISTINCT
-            user_id
+    customers AS (
+        SELECT
+            COUNT(DISTINCT user_id) AS total_customers
         FROM sales
     )
 
-SELECT DISTINCT(user_id) FROM promotional_sales_users
-    /*s.promo_desc,
-    COUNT(psu.user_id) AS customers_with_discount,
-    COUNT(tsu.user_id) AS total_customers,
-    (COUNT(psu.user_id) / COUNT(tsu.user_id)) * 100 AS CDR
-FROM total_sales_users tsu
-JOIN promotional_sales_users psu
-    ON tsu.user_id = psu.user_id
-JOIN sales s
-    ON s.promo_id = psu.promo_id
-GROUP BY s.promo_desc*/
+SELECT 
+    promo_desc,
+    total_customers_per_promo,
+    total_customers,
+    ROUND((total_customers_per_promo/total_customers) * 100,2) AS CDR_percentaje
+FROM customers tc
+CROSS JOIN customers_per_promo tcp
+WHERE promo_desc != 'No-promo'
+ORDER BY CDR_percentaje DESC
+

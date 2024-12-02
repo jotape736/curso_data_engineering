@@ -9,8 +9,11 @@ products AS (
         product_desc,
         price_usd,
         inventory,
-        stock
+        stock,
+        load_date_utc
     FROM stg_products
     )
 
 SELECT * FROM products
+
+

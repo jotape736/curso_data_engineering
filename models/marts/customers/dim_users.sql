@@ -1,6 +1,16 @@
+{{ config(
+    unique_key = 'user_id'
+    ) 
+}}
+
 WITH stg_users AS (
     SELECT * 
     FROM {{ ref('stg_sql_server_dbo__users') }}
+{% if is_incremental() %}
+
+    WHERE load_date_utc > (select max(load_date_utc) from {{ this }})
+
+{% endif %}
     ),
 
 users AS (

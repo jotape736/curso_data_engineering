@@ -6,11 +6,11 @@
 WITH stg_orders AS (
     SELECT * 
     FROM {{ ref('stg_sql_server_dbo__orders') }}
-{% if is_incremental() %}
+    {% if is_incremental() %}
 
-    WHERE load_date_utc > (select max(load_date_utc) from {{ this }})
+        WHERE load_date_utc > (select max(load_date_utc) from {{ this }})
 
-{% endif %}
+    {% endif %}
     ),
 
 status AS (

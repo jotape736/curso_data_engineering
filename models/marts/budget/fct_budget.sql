@@ -6,11 +6,6 @@
 WITH stg_budget AS (
     SELECT * 
     FROM {{ ref('stg_google_sheets__budget') }}
-    {% if is_incremental() %}
-
-        WHERE load_date_utc > (select max(load_date_utc) from {{ this }})
-
-    {% endif %}
     ),
 
     budget AS (
@@ -22,6 +17,11 @@ WITH stg_budget AS (
             ,year
             ,load_date_utc
         FROM stg_budget
+        {% if is_incremental() %}
+
+        WHERE load_date_utc > (select max(load_date_utc) from {{ this }})
+
+        {% endif %}
     )
 
 SELECT * FROM budget

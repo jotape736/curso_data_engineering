@@ -51,8 +51,6 @@ models:
         +schema: core
       budget:
         +schema: budget
-      customer:
-        +schema: customer
       product:
         +schema: product
       promotions:

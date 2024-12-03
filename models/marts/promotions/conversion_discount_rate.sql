@@ -3,7 +3,8 @@ WITH sales AS (
         order_id,
         user_id,
         promos.promo_id,
-        promos.promo_desc
+        promos.promo_desc,
+        promos.discount
     FROM {{ ref("fct_order_items") }} orders
     INNER JOIN {{ ref("dim_promos") }} promos
         ON orders.promo_id = promos.promo_id
@@ -12,9 +13,10 @@ WITH sales AS (
     customers_per_promo AS (
         SELECT 
             COUNT(DISTINCT(user_id)) AS total_customers_per_promo,
-            promo_desc
+            promo_desc,
+            discount
         FROM sales
-        GROUP BY promo_desc
+        GROUP BY promo_desc, discount
     ),
 
     customers AS (
@@ -25,6 +27,7 @@ WITH sales AS (
 
 SELECT 
     promo_desc,
+    discount
     total_customers_per_promo,
     total_customers,
     ROUND((total_customers_per_promo/total_customers) * 100,2) AS CDR_percentaje

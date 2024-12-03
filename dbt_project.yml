@@ -49,6 +49,14 @@ models:
       +database: "{{ env_var('DBT_ENVIRONMENTS') }}_GOLD_DB"
       core:
         +schema: core
+      budget:
+        +schema: budget
+      customer:
+        +schema: customer
+      product:
+        +schema: product
+      promotions:
+        +schema: promotions
 
 seeds:
   +database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB"        

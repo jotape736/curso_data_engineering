@@ -1,3 +1,7 @@
+{{ config(
+    unique_key = 'order_id'
+    ) 
+}}
 WITH stg_orders AS (
     SELECT * 
     FROM {{ ref('stg_sql_server_dbo__orders') }}
@@ -27,7 +31,8 @@ WITH stg_orders AS (
             orders.tracking_id,
             order_items.product_id,
             order_items.quantity,
-            orders.days_to_deliver
+            orders.days_to_deliver,
+            orders.load_date_utc
             FROM stg_orders orders
             INNER JOIN stg_order_items order_items
                 ON orders.order_id = order_items.order_id
@@ -49,5 +54,11 @@ SELECT
     tracking_id,
     estimated_delivery_at_utc,
     delivered_at_utc,
-    days_to_deliver
+    days_to_deliver,
+    load_date_utc
 FROM orders
+{% if is_incremental() %}
+
+    WHERE load_date_utc > (select max(load_date_utc) from {{ this }})
+
+{% endif %}

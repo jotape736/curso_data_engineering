@@ -1,5 +1,5 @@
 {{ config(
-    unique_key = 'product_id_id'
+    unique_key = 'product_id'
     ) 
 }}
 

@@ -14,7 +14,7 @@ WITH src_events AS (
             session_id::VARCHAR(40) AS session_id,
             CONVERT_TIMEZONE('UTC',created_at) AS created_at_utc,
             NULLIF(order_id,'')::VARCHAR(40) AS order_id,
-            CONVERT_TIMEZONE('UTC',_fivetran_synced) AS load_date_utc,
+            CONVERT_TIMEZONE('UTC',_fivetran_synced) AS load_date_utc
         FROM src_events
     )
 

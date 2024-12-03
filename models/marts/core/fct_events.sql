@@ -5,11 +5,6 @@
 WITH stg_events AS (
     SELECT * 
     FROM {{ ref('stg_sql_server_dbo__events') }}
-    {% if is_incremental() %}
-
-    WHERE load_date_utc > (select max(load_date_utc) from {{ this }})
-
-    {% endif %}
     ),
 
     events AS (
@@ -24,6 +19,11 @@ WITH stg_events AS (
             created_at_utc,
             load_date_utc
         FROM stg_events
+        {% if is_incremental() %}
+
+            WHERE load_date_utc > (select max(load_date_utc) from {{ this }})
+
+        {% endif %}
     )
 
 SELECT * FROM events

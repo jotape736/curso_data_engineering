@@ -29,18 +29,16 @@ models:
       - name: load_date_utc
         description: "Timestamp indicating when the product data was last loaded, in UTC."
 
-  - name: product_best_sellers_by_state
-    description: "Model that ranks the best-selling products by state based on total quantity sold, using a dense ranking method."
+  - name: products_best_sellers
+    description: "This model identifies the best-selling products based on the number of units sold, ranking them by total sales volume."
     columns:
-      - name: state
-        description: "The state in which the product was sold."
       - name: product_desc
-        description: "Description of the product being sold."
-      - name: total_quantity
-        description: "Total quantity of the product sold in the given state."
+        description: "Description of the product."
+      - name: total_products_sold
+        description: "Total quantity of the product sold."
       - name: ranking
-        description: "Ranking of the product within the state based on total quantity sold. Uses `DENSE_RANK` to handle ties, ranking products in order of total quantity sold."
-
+        description: "Ranking of products based on total quantity sold, with the highest-selling products ranked first."
+      
   - name: dim_status
     description: "Dimension table containing status information, including unique status identifiers and descriptions of various order or transaction statuses."
     columns:

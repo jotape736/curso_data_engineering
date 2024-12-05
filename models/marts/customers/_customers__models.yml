@@ -36,7 +36,7 @@ models:
       - name: total_different_products
         description: "Total number of unique products purchased by the user."
   
-  - name: customer_session_analysis
+  - name: customer_sessions_analysis
     description: "Analysis of customer sessions, summarizing user information, session duration, and event type counts."
     columns:
       - name: session_id

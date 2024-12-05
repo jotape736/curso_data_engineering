@@ -29,7 +29,7 @@ models:
       - name: load_date_utc
         description: "Timestamp indicating when the product data was last loaded, in UTC."
 
-  - name: products_best_sellers
+  - name: product_best_sellers
     description: "This model identifies the best-selling products based on the number of units sold, ranking them by total sales volume."
     columns:
       - name: product_desc

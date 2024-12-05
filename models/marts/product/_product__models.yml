@@ -1,0 +1,91 @@
+version: 2
+
+models:
+  - name: product_best_sellers_by_state
+    description: "Model calculating the best-selling products by state based on total quantity sold, with a ranking for each product per state."
+    columns:
+      - name: state
+        description: "The state where the products were sold."
+      - name: product_desc
+        description: "Description of the product."
+      - name: total_quantity
+        description: "Total quantity of the product sold in the state."
+      - name: ranking
+        description: "Ranking of the product within the state, based on the total quantity sold. Uses `DENSE_RANK` to handle ties."
+  
+  - name: dim_products
+    description: "Dimension table containing detailed information about products, including product descriptions, pricing, inventory levels, and stock status."
+    columns:
+      - name: product_id
+        description: "Unique identifier for each product."
+      - name: product_desc
+        description: "Description of the product."
+      - name: price_usd
+        description: "Price of the product in USD."
+      - name: inventory
+        description: "Total inventory level for the product."
+      - name: stock
+        description: "Available stock of the product for sale."
+      - name: load_date_utc
+        description: "Timestamp indicating when the product data was last loaded, in UTC."
+
+  - name: product_best_sellers_by_state
+    description: "Model that ranks the best-selling products by state based on total quantity sold, using a dense ranking method."
+    columns:
+      - name: state
+        description: "The state in which the product was sold."
+      - name: product_desc
+        description: "Description of the product being sold."
+      - name: total_quantity
+        description: "Total quantity of the product sold in the given state."
+      - name: ranking
+        description: "Ranking of the product within the state based on total quantity sold. Uses `DENSE_RANK` to handle ties, ranking products in order of total quantity sold."
+
+  - name: dim_status
+    description: "Dimension table containing status information, including unique status identifiers and descriptions of various order or transaction statuses."
+    columns:
+      - name: status_id
+        description: "Unique identifier for each status."
+      - name: status_desc
+        description: '{{ doc("order_status") }}'
+      - name: load_date_utc
+        description: "Timestamp indicating when the status data was last loaded, in UTC."
+
+  - name: fct_order_items
+    description: "Fact table containing detailed information about order items, including order costs, shipping costs, quantities, and product details."
+    columns:
+      - name: order_id
+        description: "Unique identifier for each order."
+      - name: user_id
+        description: "Unique identifier for the user who placed the order."
+      - name: product_id
+        description: "Unique identifier for the product ordered."
+      - name: quantity
+        description: "Quantity of the product ordered."
+      - name: shipping_service_id
+        description: "Identifier for the shipping service used for the order."
+      - name: shipping_cost_usd
+        description: "Shipping cost for the order in USD."
+      - name: order_cost_usd
+        description: "Cost of the order in USD, excluding shipping and discounts."
+      - name: order_total_usd
+        description: "Total cost of the order in USD, including shipping and any discounts."
+      - name: promo_id
+        description: "Identifier for the promotional offer applied to the order."
+      - name: address_id
+        description: "Identifier for the address associated with the order."
+      - name: created_at_utc
+        description: "Timestamp indicating when the order was created, in UTC."
+      - name: status_id
+        description: "Identifier for the order's status (e.g., pending, shipped, delivered)."
+      - name: tracking_id
+        description: "Tracking number for the order's shipment."
+      - name: estimated_delivery_at_utc
+        description: "Estimated delivery time for the order, in UTC."
+      - name: delivered_at_utc
+        description: "Actual delivery time for the order, in UTC."
+      - name: days_to_deliver
+        description: "Number of days it took to deliver the order."
+      - name: load_date_utc
+        description: "Timestamp indicating when the order data was last loaded, in UTC."
+  

@@ -1,13 +1,60 @@
 version: 2
 
 models:
-  - name: users
+  - name: dim_addresses
+    description: "Dimension table containing detailed information about user addresses."
     columns:
-      - name: user_id
       - name: address_id
-      - name: last_name
-      - name: first_name
-      - name: created_at
-      - name: phone_number
-      - name: email
-      - name: load_date
+        description: "Unique identifier for each address."
+      - name: address_desc
+        description: "Descriptive name or label for the address."
+      - name: load_date_utc
+        description: "The date and time when the address data was loaded, in UTC."
+      - name: country
+        description: "The name of the country associated with the address."
+      - name: state
+        description: "The state or region associated with the address."
+      - name: zipcode
+        description: "The postal code of the address."
+
+  - name: fct_events
+    description: "Fact table capturing events during user interactions on an e-commerce platform."
+    columns:
+      - name: event_id
+        description: "Unique identifier for each event."
+      - name: page_url
+        description: "URL of the page where the event occurred."
+      - name: event_type_id
+        description: "Unique identifier for the type of event, used for normalization."
+      - name: user_id
+        description: "Foreign key linking the event to the user who triggered it."
+      - name: product_id
+        description: "Foreign key linking the event to a specific product."
+      - name: session_id
+        description: "Unique identifier grouping all events within a single session."
+      - name: created_at_utc
+        description: "Timestamp when the event was created, in UTC format."
+      - name: order_id
+        description: "Foreign key linking the event to a specific order."
+      - name: load_date_utc
+        description: "The date and time when the event data was loaded, in UTC."
+
+  - name: dim_dates
+    description: "Dimension table providing detailed calendar and date-related attributes."
+    columns:
+      - name: date
+        description: "The calendar date in YYYY-MM-DD format."
+      - name: id_date
+        description: "Unique identifier for the date, often used for joining with fact tables."
+      - name: year
+        description: "The year associated with the date."
+      - name: month
+        description: "The numeric representation of the month (1-12)."
+      - name: month_desc
+        description: "The name of the month (e.g., January, February)."
+      - name: id_year_month
+        description: "Unique identifier combining year and month, used for aggregation."
+      - name: previous_day
+        description: "The date corresponding to the previous calendar day."
+      - name: year_week_day
+        description: "Numeric representation of the day within the week, aligned with the year (e.g., Monday as 1)."

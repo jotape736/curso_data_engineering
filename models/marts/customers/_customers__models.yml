@@ -1,0 +1,111 @@
+version: 2
+
+models:
+  - name: customer_purchase_analysis
+    columns:
+      - name: user_id
+        description: "Primary key for users, linking user-level metrics and details."
+      - name: first_name
+        description: "User's first name."
+      - name: last_name
+        description: "User's last name."
+      - name: email
+        description: "User's email address."
+      - name: phone_number
+        description: "User's phone number."
+      - name: created_at_utc
+        description: "The date and time when the user was created, in UTC format."
+      - name: address_desc
+        description: "Description of the user's address."
+      - name: zipcode
+        description: "User's postal code."
+      - name: country
+        description: "User's country of residence."
+      - name: state
+        description: "User's state or region."
+      - name: total_number_orders
+        description: "Total number of orders placed by the user."
+      - name: total_order_cost_usd
+        description: "Cumulative cost of all orders placed by the user, in USD."
+      - name: total_shipping_cost_usd
+        description: "Total shipping cost associated with the user's orders, in USD."
+      - name: total_discount_usd
+        description: "Total discounts applied to the user's orders, in USD."
+      - name: total_quantity_product
+        description: "Total quantity of products purchased by the user."
+      - name: total_different_products
+        description: "Total number of unique products purchased by the user."
+  
+  - name: customer_session_analysis
+    description: "Analysis of customer sessions, summarizing user information, session duration, and event type counts."
+    columns:
+      - name: session_id
+        description: "Unique identifier for the session."
+      - name: user_id
+        description: "Primary key for the user associated with the session."
+      - name: first_name
+        description: "User's first name."
+      - name: last_name
+        description: "User's last name."
+      - name: email
+        description: "User's email address."
+      - name: first_event_time_utc
+        description: "Timestamp of the first event in the session, in UTC."
+      - name: last_event_time_utc
+        description: "Timestamp of the last event in the session, in UTC."
+      - name: session_length_minutes
+        description: "Duration of the session in minutes, calculated as the difference between the first and last event times."
+      - name: page_view
+        description: "Count of 'page_view' events during the session."
+      - name: add_to_cart
+        description: "Count of 'add_to_cart' events during the session."
+      - name: checkout
+        description: "Count of 'checkout' events during the session."
+      - name: package_shipped
+        description: "Count of 'package_shipped' events during the session."
+
+  - name: dim_user_data
+    description: "Dimension table consolidating detailed user information, including personal details and address data."
+    columns:
+      - name: user_id
+        description: "Unique identifier for the user."
+      - name: first_name
+        description: "User's first name."
+      - name: last_name
+        description: "User's last name."
+      - name: email
+        description: "User's email address."
+      - name: phone_number
+        description: "User's phone number."
+      - name: created_at_utc
+        description: "The date and time when the user record was created, in UTC format."
+      - name: address_id
+        description: "Unique identifier for the user's address, linking to the `dim_addresses` table."
+      - name: address_desc
+        description: "Description or name of the user's address."
+      - name: zipcode
+        description: "Postal code of the user's address."
+      - name: country
+        description: "Country associated with the user's address."
+      - name: state
+        description: "State or region associated with the user's address."
+  
+  - name: dim_users
+    description: "Dimension table consolidating user information with incremental loading based on the `load_date_utc` field."
+    columns:
+      - name: user_id
+        description: "Unique identifier for each user."
+      - name: first_name
+        description: "The user's first name."
+      - name: last_name
+        description: "The user's last name."
+      - name: email
+        description: "The user's email address."
+      - name: phone_number
+        description: "The user's phone number."
+      - name: created_at_utc
+        description: "The timestamp indicating when the user record was created, in UTC."
+      - name: address_id
+        description: "Foreign key linking the user to their address in the `dim_addresses` table."
+      - name: load_date_utc
+        description: "The date and time when the user data was last loaded, used for incremental processing."

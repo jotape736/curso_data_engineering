@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: conversion_discount_rate
+    description: "Model calculating the Conversion Discount Rate (CDR), which measures the percentage of customers attracted by specific promotions."
+    columns:
+      - name: promo_desc
+        description: "Description of the promotion applied."
+      - name: discount
+        description: "Percentage or value of the discount offered in the promotion."
+      - name: total_customers_per_promo
+        description: "Total number of unique customers who made purchases using the promotion."
+      - name: total_customers
+        description: "Total number of unique customers across all sales."
+      - name: CDR_percentaje
+        description: "Conversion Discount Rate expressed as a percentage, calculated as the ratio of customers per promo to total customers."
+
+  - name: promotional_effectiveness_index
+    description: "Model calculating the Promotional Effectiveness Index (PEI), which evaluates the impact of promotions on average sales compared to non-promotional sales."
+    columns:
+      - name: promo_desc
+        description: "Description of the promotion applied."
+      - name: discount
+        description: "Percentage or value of the discount offered in the promotion."
+      - name: avg_promotional_sales_usd
+        description: "Average sales revenue (in USD) for orders using the specific promotion."
+      - name: avg_non_promotional_sales_usd
+        description: "Average sales revenue (in USD) for orders without any promotion."
+      - name: PEI_percentaje
+        description: "Promotional Effectiveness Index, expressed as a percentage. It measures the relative increase or decrease in sales due to the promotion compared to non-promotional sales."
+
+  - name: dim_promos
+    description: "Dimension table containing information about promotions, including their descriptions, discounts, and status."
+    columns:
+      - name: promo_id
+        description: "Unique identifier for each promotion."
+      - name: promo_desc
+        description: "Description of the promotion."
+      - name: discount
+        description: "Discount value or percentage offered in the promotion."
+      - name: status
+        description: "Current status of the promotion (e.g., active, expired)."
+      - name: load_date_utc
+        description: "Timestamp indicating when the promotion data was loaded, in UTC."
